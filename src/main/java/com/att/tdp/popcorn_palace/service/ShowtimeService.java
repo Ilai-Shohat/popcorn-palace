@@ -1,7 +1,5 @@
 package com.att.tdp.popcorn_palace.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +12,8 @@ public class ShowtimeService {
     @Autowired
     private ShowtimeRepository showtimeRepository;
 
-    public List<Showtime> getAllShowtimes() {
-        return showtimeRepository.findAll();
+    public Showtime getShowtimeById(Long showtimeId) {
+        return showtimeRepository.getReferenceById(showtimeId);
     }
 
     public void createShowtime(Showtime showtime) {
