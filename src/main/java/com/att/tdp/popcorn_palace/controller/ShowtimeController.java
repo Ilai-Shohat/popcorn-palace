@@ -1,7 +1,5 @@
 package com.att.tdp.popcorn_palace.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,13 +16,13 @@ import com.att.tdp.popcorn_palace.service.ShowtimeService;
 @RestController
 @RequestMapping("/showtimes")
 public class ShowtimeController {
-    
+
     @Autowired
     private ShowtimeService showtimeService;
 
-    @GetMapping
-    public List<Showtime> getAllShowtimes() {
-        return showtimeService.getAllShowtimes();
+    @GetMapping("/{showtimeId}")
+    public Showtime getShowtimeById(@PathVariable Long showtimeId) {
+        return showtimeService.getShowtimeById(showtimeId);
     }
 
     @PostMapping
