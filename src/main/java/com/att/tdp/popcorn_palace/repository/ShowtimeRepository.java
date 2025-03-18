@@ -6,4 +6,5 @@ import com.att.tdp.popcorn_palace.model.Showtime;
 
 public interface ShowtimeRepository extends JpaRepository<Showtime, Long> {
 
+    Showtime getReferenceById(Long showtimeId);
 }
