@@ -2,10 +2,13 @@ package com.att.tdp.popcorn_palace.dto;
 
 import java.time.Instant;
 
+import lombok.Data;
+
+@Data
 public class ShowtimeDTO {
     private Long id;
-    private double price;
     private Long movieId;
+    private double price;
     private String theater;
     private Instant startTime;
     private Instant endTime;
@@ -13,10 +16,10 @@ public class ShowtimeDTO {
     public ShowtimeDTO() {
     }
 
-    public ShowtimeDTO(Long id, double price, Long movieId, String theater, Instant startTime, Instant endTime) {
+    public ShowtimeDTO(Long id, Long movieId, double price, String theater, Instant startTime, Instant endTime) {
         this.id = id;
-        this.price = price;
         this.movieId = movieId;
+        this.price = price;
         this.theater = theater;
         this.startTime = startTime;
         this.endTime = endTime;
