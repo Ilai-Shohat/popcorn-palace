@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tickets")
@@ -20,12 +22,15 @@ public class Ticket {
 
     @ManyToOne
     @JoinColumn(name = "showtime_id", nullable = false)
+    @NotNull(message = "Showtime is required")
     private Showtime showtime;
 
     @Column(name = "seat_number")
+    @NotBlank(message = "Seat number is required")
     private String seatNumber;
 
     @Column(name = "user_id")
+    @NotNull(message = "User ID is required")
     private UUID userId;
 
     @Column(name = "booking_id")

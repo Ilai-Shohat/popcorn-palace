@@ -6,6 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "movies")
@@ -15,19 +19,28 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "title", unique = true)
+    @NotNull(message = "Title is required")
     private String title;
 
     @Column(name = "genre")
+    @NotNull(message = "Genre is required")
     private String genre;
 
     @Column(name = "duration")
+    @NotNull(message = "Duration is required")
+    @Positive(message = "Duration must be positive")
     private int duration;
 
     @Column(name = "rating")
+    @NotNull(message = "Rating is required")
+    @Min(value = 0, message = "Rating must be at least 1")
+    @Max(value = 10, message = "Rating must be at most 10")
     private double rating;
 
     @Column(name = "release_year")
+    @NotNull(message = "Release year is required")
+    @Max(value = 2025, message = "Release year cannot be in the future")
     private int releaseYear;
 
     public Movie() {
