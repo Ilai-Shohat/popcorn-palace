@@ -21,5 +21,4 @@ public class TicketBookingController {
         ticketService.bookTicket(ticket);
         return "Ticket booked successfully";
     }
-
 }
