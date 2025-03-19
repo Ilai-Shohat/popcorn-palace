@@ -1,10 +1,14 @@
 package com.att.tdp.popcorn_palace.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,23 +18,28 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "showtime_id")
-    private String showtimeId;
+    @ManyToOne
+    @JoinColumn(name = "showtime_id", nullable = false)
+    private Showtime showtime;
 
     @Column(name = "seat_number")
     private String seatNumber;
 
     @Column(name = "user_id")
-    private String userId;
+    private UUID userId;
+
+    @Column(name = "booking_id")
+    private UUID bookingId;
 
     public Ticket() {
     }
 
-    public Ticket(String showtimeId, String seatNumber, String userId) {
+    public Ticket(Showtime showtime, String seatNumber, UUID userId) {
         super();
-        this.showtimeId = showtimeId;
+        this.showtime = showtime;
         this.seatNumber = seatNumber;
         this.userId = userId;
+        this.bookingId = UUID.randomUUID();
     }
 
     public Long getId() {
@@ -41,12 +50,12 @@ public class Ticket {
         this.id = id;
     }
 
-    public String getShowtimeId() {
-        return showtimeId;
+    public Showtime getShowtime() {
+        return showtime;
     }
 
-    public void setShowtimeId(String showtimeId) {
-        this.showtimeId = showtimeId;
+    public void setShowtime(Showtime showtime) {
+        this.showtime = showtime;
     }
 
     public String getSeatNumber() {
@@ -57,17 +66,25 @@ public class Ticket {
         this.seatNumber = seatNumber;
     }
 
-    public String getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
+    }
+
+    public UUID getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(UUID bookingId) {
+        this.bookingId = bookingId;
     }
 
     @Override
     public String toString() {
-        return "Ticket [id=" + id + ", showtimeId=" + showtimeId + ", seatNumber=" + seatNumber + ", userId=" + userId
-                + "]";
+        return "Ticket [id=" + id + ", showtime=" + showtime + ", seatNumber=" + seatNumber +
+                ", userId=" + userId + ", bookingId=" + bookingId + "]";
     }
 }

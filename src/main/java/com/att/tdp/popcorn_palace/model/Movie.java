@@ -28,18 +28,18 @@ public class Movie {
     private double rating;
 
     @Column(name = "release_year")
-    private int release_year;
+    private int releaseYear;
 
     public Movie() {
     }
 
-    public Movie(String title, String genre, int duration, double rating, int release_year) {
+    public Movie(String title, String genre, int duration, double rating, int releaseYear) {
         super();
         this.title = title;
         this.genre = genre;
         this.duration = duration;
         this.rating = rating;
-        this.release_year = release_year;
+        this.releaseYear = releaseYear;
     }
 
     public Long getId() {
@@ -82,17 +82,17 @@ public class Movie {
         this.rating = rating;
     }
 
-    public int getRelease_year() {
-        return release_year;
+    public int getReleaseYear() {
+        return releaseYear;
     }
 
-    public void setRelease_year(int release_year) {
-        this.release_year = release_year;
+    public void setReleaseYear(int releaseYear) {
+        this.releaseYear = releaseYear;
     }
 
     @Override
     public String toString() {
         return "Movie [id=" + id + ", title=" + title + ", genre=" + genre + ", duration=" + duration + ", rating="
-                + rating + ", release_year=" + release_year + "]";
+                + rating + ", releaseYear=" + releaseYear + "]";
     }
 }

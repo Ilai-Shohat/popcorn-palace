@@ -1,12 +1,14 @@
 package com.att.tdp.popcorn_palace.model;
 
-import java.sql.Date;
+import java.time.Instant;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,29 +19,31 @@ public class Showtime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    Movie movie;
+    @ManyToOne
+    @JoinColumn(name = "movie_id", nullable = false)
+    private Movie movie;
 
     @Column(name = "theater")
-    String theater;
+    private String theater;
 
     @Column(name = "start_time")
-    Date start_time;
+    private Instant startTime;
 
     @Column(name = "end_time")
-    Date end_time;
+    private Instant endTime;
 
     @Column(name = "price")
-    double price;
+    private double price;
 
     public Showtime() {
     }
 
-    public Showtime(Movie movie, String theater, Date start_time, Date end_time, double price) {
+    public Showtime(Movie movie, String theater, Instant startTime, Instant endTime, double price) {
         super();
         this.movie = movie;
         this.theater = theater;
-        this.start_time = start_time;
-        this.end_time = end_time;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.price = price;
     }
 
@@ -67,20 +71,20 @@ public class Showtime {
         this.theater = theater;
     }
 
-    public Date getStart_time() {
-        return start_time;
+    public Instant getStartTime() {
+        return startTime;
     }
 
-    public void setStart_time(Date start_time) {
-        this.start_time = start_time;
+    public void setStartTime(Instant startTime) {
+        this.startTime = startTime;
     }
 
-    public Date getEnd_time() {
-        return end_time;
+    public Instant getEndTime() {
+        return endTime;
     }
 
-    public void setEnd_time(Date end_time) {
-        this.end_time = end_time;
+    public void setEndTime(Instant endTime) {
+        this.endTime = endTime;
     }
 
     public double getPrice() {
@@ -93,7 +97,7 @@ public class Showtime {
 
     @Override
     public String toString() {
-        return "Showtime [id=" + id + ", movie=" + movie + ", theater=" + theater + ", start_time=" + start_time
-                + ", end_time=" + end_time + ", price=" + price + "]";
+        return "Showtime [id=" + id + ", movie=" + movie + ", theater=" + theater + ", startTime=" + startTime
+                + ", endTime=" + endTime + ", price=" + price + "]";
     }
 }
