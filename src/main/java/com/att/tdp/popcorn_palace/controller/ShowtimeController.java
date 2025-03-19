@@ -29,13 +29,15 @@ public class ShowtimeController {
     }
 
     @PostMapping
-    public ResponseEntity<ShowtimeDTO> createShowtime(@RequestBody Showtime showtime) {
+    public ResponseEntity<ShowtimeDTO> createShowtime(@RequestBody ShowtimeDTO showtimeDTO) {
+        Showtime showtime = showtimeMapper.fromDTO(showtimeDTO);
         Showtime createdShowtime = showtimeService.createShowtime(showtime);
         return ResponseEntity.ok(showtimeMapper.toDTO(createdShowtime));
     }
 
     @PostMapping("/update/{showtimeId}")
-    public ResponseEntity<?> updateShowtime(@PathVariable Long showtimeId, @RequestBody Showtime showtime) {
+    public ResponseEntity<?> updateShowtime(@PathVariable Long showtimeId, @RequestBody ShowtimeDTO showtimeDTO) {
+        Showtime showtime = showtimeMapper.fromDTO(showtimeDTO);
         Showtime updatedShowtime = showtimeService.updateShowtime(showtimeId, showtime);
         if (updatedShowtime != null) {
             return ResponseEntity.ok().build();
