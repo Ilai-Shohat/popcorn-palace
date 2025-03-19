@@ -1,3 +1,26 @@
-CREATE TABLE IF NOT EXISTS task (
-                                    description VARCHAR(64) NOT NULL,
-    completed   VARCHAR(30) NOT NULL);
+CREATE TABLE IF NOT EXISTS movies (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(128) NOT NULL,
+    genre VARCHAR(64) NOT NULL,
+    duration INT NOT NULL,
+    rating DECIMAL(3, 2) NOT NULL,
+    release_year INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS showtimes (
+    id SERIAL PRIMARY KEY,
+    movie_id BIGINT NOT NULL,
+    theater VARCHAR(64) NOT NULL,
+    start_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    end_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tickets (
+    id SERIAL PRIMARY KEY,
+    showtime_id BIGINT NOT NULL,
+    seat_number VARCHAR(64) NOT NULL,
+    user_id UUID NOT NULL,
+    booking_id UUID NOT NULL,
+    UNIQUE(showtime_id, seat_number)  -- Adding a unique constraint to prevent double booking
+);
