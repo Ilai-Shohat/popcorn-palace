@@ -1,5 +1,7 @@
 package com.att.tdp.popcorn_palace.service;
 
+import com.att.tdp.popcorn_palace.exception.InvalidTimeRangeException;
+import com.att.tdp.popcorn_palace.exception.MovieNotFoundException;
 import com.att.tdp.popcorn_palace.exception.OverlappingShowtimeException;
 import com.att.tdp.popcorn_palace.model.Showtime;
 import com.att.tdp.popcorn_palace.repository.ShowtimeRepository;
@@ -15,6 +17,9 @@ public class ShowtimeService {
     @Autowired
     private ShowtimeRepository showtimeRepository;
 
+    @Autowired
+    private MovieService movieService;
+
     public List<Showtime> getAllShowtimes() {
         return showtimeRepository.findAll();
     }
@@ -24,6 +29,8 @@ public class ShowtimeService {
     }
 
     public Showtime createShowtime(Showtime showtime) {
+        validateMovie(showtime);
+        validateTimeRange(showtime);
         validateNoOverlappingShowtimes(showtime, null);
         return showtimeRepository.save(showtime);
     }
@@ -31,6 +38,8 @@ public class ShowtimeService {
     public Showtime updateShowtime(Long id, Showtime showtime) {
         Optional<Showtime> existingShowtime = showtimeRepository.findById(id);
         if (existingShowtime.isPresent()) {
+            validateMovie(showtime);
+
             Showtime updatedShowtime = existingShowtime.get();
             updatedShowtime.setMovie(showtime.getMovie());
             updatedShowtime.setPrice(showtime.getPrice());
@@ -38,6 +47,7 @@ public class ShowtimeService {
             updatedShowtime.setStartTime(showtime.getStartTime());
             updatedShowtime.setEndTime(showtime.getEndTime());
 
+            validateTimeRange(updatedShowtime);
             validateNoOverlappingShowtimes(updatedShowtime, id);
 
             return showtimeRepository.save(updatedShowtime);
@@ -52,6 +62,22 @@ public class ShowtimeService {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Validates that the movie in the showtime exists in the database
+     * 
+     * @param showtime The showtime to validate
+     * @throws MovieNotFoundException if the movie doesn't exist
+     */
+    private void validateMovie(Showtime showtime) {
+        if (showtime.getMovie() == null) {
+            throw new MovieNotFoundException("Movie is required for showtime");
+        }
+
+        if (movieService.getMovieById(showtime.getMovie().getId()) == null) {
+            throw new MovieNotFoundException("Movie with ID " + showtime.getMovie().getId() + " not found");
+        }
     }
 
     /**
@@ -76,6 +102,26 @@ public class ShowtimeService {
                             conflictingShowtime.getTheater(),
                             conflictingShowtime.getStartTime(),
                             conflictingShowtime.getEndTime()));
+        }
+    }
+
+    /**
+     * Validates that the start time is before the end time
+     * 
+     * @param showtime The showtime to validate
+     * @throws InvalidTimeRangeException if end time is not after start time
+     */
+    private void validateTimeRange(Showtime showtime) {
+        if (showtime.getStartTime() == null) {
+            throw new InvalidTimeRangeException("Start time cannot be null");
+        }
+
+        if (showtime.getEndTime() == null) {
+            throw new InvalidTimeRangeException("End time cannot be null");
+        }
+
+        if (!showtime.getStartTime().isBefore(showtime.getEndTime())) {
+            throw new InvalidTimeRangeException("End time must be after start time");
         }
     }
 }
