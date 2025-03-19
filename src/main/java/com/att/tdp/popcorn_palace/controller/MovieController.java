@@ -3,13 +3,13 @@ package com.att.tdp.popcorn_palace.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.att.tdp.popcorn_palace.model.Movie;
@@ -23,25 +23,34 @@ public class MovieController {
     private MovieService movieService;
 
     @GetMapping("/all")
-    public List<Movie> getAllMovies() {
-        return movieService.getAllMovies();
+    public ResponseEntity<List<Movie>> getAllMovies() {
+        List<Movie> movies = movieService.getAllMovies();
+        return ResponseEntity.ok(movies);
     }
 
     @PostMapping
-    public String createMovie(@RequestBody Movie movie) {
-        movieService.createMovie(movie);
-        return "Movie created successfully";
+    public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
+        Movie createdMovie = movieService.createMovie(movie);
+        return ResponseEntity.ok(createdMovie);
     }
 
-    @PutMapping("update/{movieTitle}")
-    public String updateMovie(@PathVariable String movieTitle, @RequestBody Movie movie) {
-        movieService.updateMovie(movieTitle, movie);
-        return "Movie updated successfully";
+    @PostMapping("/update/{movieTitle}")
+    public ResponseEntity<?> updateMovie(@PathVariable String movieTitle, @RequestBody Movie movie) {
+        boolean updated = movieService.updateMovie(movieTitle, movie);
+        if (updated) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{movieTitle}")
-    public String deleteMovie(@PathVariable String movieTitle) {
-        movieService.deleteMovie(movieTitle);
-        return "Movie deleted successfully";
+    public ResponseEntity<?> deleteMovie(@PathVariable String movieTitle) {
+        boolean deleted = movieService.deleteMovie(movieTitle);
+        if (deleted) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
