@@ -1,10 +1,12 @@
 package com.att.tdp.popcorn_palace.service;
 
+import com.att.tdp.popcorn_palace.model.Showtime;
+import com.att.tdp.popcorn_palace.repository.ShowtimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.att.tdp.popcorn_palace.model.Showtime;
-import com.att.tdp.popcorn_palace.repository.ShowtimeRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ShowtimeService {
@@ -12,27 +14,37 @@ public class ShowtimeService {
     @Autowired
     private ShowtimeRepository showtimeRepository;
 
-    public Showtime getShowtimeById(Long showtimeId) {
-        return showtimeRepository.getReferenceById(showtimeId);
+    public List<Showtime> getAllShowtimes() {
+        return showtimeRepository.findAll();
     }
 
-    public void createShowtime(Showtime showtime) {
-        showtimeRepository.save(showtime);
+    public Optional<Showtime> getShowtimeById(Long id) {
+        return showtimeRepository.findById(id);
     }
 
-    public void updateShowtime(Long showtimeId, Showtime showtime) {
-        Showtime existingShowtime = showtimeRepository.getReferenceById(showtimeId);
-        // existingShowtime.setShowtimeId(showtime.getShowtimeId());
-        // existingShowtime.setShowtimeDate(showtime.getShowtimeDate());
-        // existingShowtime.setShowtimeTime(showtime.getShowtimeTime());
-        // existingShowtime.setShowtimeMovieTitle(showtime.getShowtimeMovieTitle());
-        // existingShowtime.setShowtimeTheaterName(showtime.getShowtimeTheaterName());
-        // existingShowtime.setShowtimeTheaterLocation(showtime.getShowtimeTheaterLocation());
-        showtimeRepository.save(existingShowtime);
+    public Showtime createShowtime(Showtime showtime) {
+        return showtimeRepository.save(showtime);
     }
 
-    public void deleteShowtime(Long showtimeId) {
-        Showtime showtime = showtimeRepository.getReferenceById(showtimeId);
-        showtimeRepository.delete(showtime);
+    public Showtime updateShowtime(Long id, Showtime showtime) {
+        Optional<Showtime> existingShowtime = showtimeRepository.findById(id);
+        if (existingShowtime.isPresent()) {
+            Showtime updatedShowtime = existingShowtime.get();
+            updatedShowtime.setPrice(showtime.getPrice());
+            updatedShowtime.setTheater(showtime.getTheater());
+            updatedShowtime.setStartTime(showtime.getStartTime());
+            updatedShowtime.setEndTime(showtime.getEndTime());
+            return showtimeRepository.save(updatedShowtime);
+        }
+        return null;
+    }
+
+    public boolean deleteShowtime(Long id) {
+        Optional<Showtime> showtime = showtimeRepository.findById(id);
+        if (showtime.isPresent()) {
+            showtimeRepository.delete(showtime.get());
+            return true;
+        }
+        return false;
     }
 }
