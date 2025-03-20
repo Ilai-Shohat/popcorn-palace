@@ -1,6 +1,7 @@
 package com.att.tdp.popcorn_palace.mapper;
 
 import com.att.tdp.popcorn_palace.dto.ShowtimeDTO;
+import com.att.tdp.popcorn_palace.exception.MovieNotFoundException;
 import com.att.tdp.popcorn_palace.model.Movie;
 import com.att.tdp.popcorn_palace.model.Showtime;
 import com.att.tdp.popcorn_palace.service.MovieService;
@@ -46,7 +47,7 @@ public class ShowtimeMapper {
 
         Movie movie = movieService.getMovieById(dto.getMovieId());
         if (movie == null) {
-            throw new IllegalArgumentException("Movie with ID " + dto.getMovieId() + " not found");
+            throw new MovieNotFoundException("Movie with ID " + dto.getMovieId() + " not found");
         }
 
         Showtime showtime = new Showtime();

@@ -41,12 +41,12 @@ public class Showtime {
     @Column(name = "price")
     @NotNull(message = "Price is required")
     @PositiveOrZero(message = "Price must be non-negative")
-    private double price;
+    private Double price;
 
     public Showtime() {
     }
 
-    public Showtime(Movie movie, String theater, Instant startTime, Instant endTime, double price) {
+    public Showtime(Movie movie, String theater, Instant startTime, Instant endTime, Double price) {
         super();
         this.movie = movie;
         this.theater = theater;
@@ -95,11 +95,11 @@ public class Showtime {
         this.endTime = endTime;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

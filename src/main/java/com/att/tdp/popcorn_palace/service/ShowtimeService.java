@@ -3,13 +3,13 @@ package com.att.tdp.popcorn_palace.service;
 import com.att.tdp.popcorn_palace.exception.InvalidTimeRangeException;
 import com.att.tdp.popcorn_palace.exception.MovieNotFoundException;
 import com.att.tdp.popcorn_palace.exception.OverlappingShowtimeException;
+import com.att.tdp.popcorn_palace.exception.ShowtimeNotFoundException;
 import com.att.tdp.popcorn_palace.model.Showtime;
 import com.att.tdp.popcorn_palace.repository.ShowtimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ShowtimeService {
@@ -24,8 +24,15 @@ public class ShowtimeService {
         return showtimeRepository.findAll();
     }
 
-    public Optional<Showtime> getShowtimeById(Long id) {
-        return showtimeRepository.findById(id);
+    public boolean showtimeExists(Long id) {
+        return showtimeRepository.existsById(id);
+    }
+
+    public Showtime getShowtimeById(Long id) {
+        if (!showtimeExists(id)) {
+            throw new ShowtimeNotFoundException("Showtime with ID " + id + " not found");
+        }
+        return showtimeRepository.findById(id).get();
     }
 
     public Showtime createShowtime(Showtime showtime) {
@@ -36,32 +43,27 @@ public class ShowtimeService {
     }
 
     public Showtime updateShowtime(Long id, Showtime showtime) {
-        Optional<Showtime> existingShowtime = showtimeRepository.findById(id);
-        if (existingShowtime.isPresent()) {
-            validateMovie(showtime);
+        Showtime existingShowtime = showtimeRepository.findById(id)
+                .orElseThrow(() -> new ShowtimeNotFoundException("Showtime with ID " + id + " not found"));
 
-            Showtime updatedShowtime = existingShowtime.get();
-            updatedShowtime.setMovie(showtime.getMovie());
-            updatedShowtime.setPrice(showtime.getPrice());
-            updatedShowtime.setTheater(showtime.getTheater());
-            updatedShowtime.setStartTime(showtime.getStartTime());
-            updatedShowtime.setEndTime(showtime.getEndTime());
+        validateMovie(showtime);
 
-            validateTimeRange(updatedShowtime);
-            validateNoOverlappingShowtimes(updatedShowtime, id);
+        existingShowtime.setMovie(showtime.getMovie());
+        existingShowtime.setPrice(showtime.getPrice());
+        existingShowtime.setTheater(showtime.getTheater());
+        existingShowtime.setStartTime(showtime.getStartTime());
+        existingShowtime.setEndTime(showtime.getEndTime());
 
-            return showtimeRepository.save(updatedShowtime);
-        }
-        return null;
+        validateTimeRange(existingShowtime);
+        validateNoOverlappingShowtimes(existingShowtime, id);
+
+        return showtimeRepository.save(existingShowtime);
     }
 
-    public boolean deleteShowtime(Long id) {
-        Optional<Showtime> showtime = showtimeRepository.findById(id);
-        if (showtime.isPresent()) {
-            showtimeRepository.delete(showtime.get());
-            return true;
-        }
-        return false;
+    public void deleteShowtime(Long id) {
+        Showtime showtime = showtimeRepository.findById(id)
+                .orElseThrow(() -> new ShowtimeNotFoundException("Showtime with ID " + id + " not found"));
+        showtimeRepository.delete(showtime);
     }
 
     /**

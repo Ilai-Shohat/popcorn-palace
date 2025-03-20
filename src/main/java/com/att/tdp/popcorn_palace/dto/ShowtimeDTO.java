@@ -2,24 +2,37 @@ package com.att.tdp.popcorn_palace.dto;
 
 import java.time.Instant;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
 @Data
 public class ShowtimeDTO {
     private Long id;
+
+    @NotNull(message = "Movie ID is required")
     private Long movieId;
-    private double price;
+
+    @NotNull(message = "Price is required")
+    @PositiveOrZero(message = "Price must be non-negative")
+    private Double price;
+
+    @NotNull(message = "Theater is required")
     private String theater;
+
+    @NotNull(message = "Start time is required")
     private Instant startTime;
+
+    @NotNull(message = "End time is required")
     private Instant endTime;
 
     public ShowtimeDTO() {
     }
 
-    public ShowtimeDTO(Long id, Long movieId, double price, String theater, Instant startTime, Instant endTime) {
+    public ShowtimeDTO(Long id, Long movieId, Double price, String theater, Instant startTime, Instant endTime) {
         this.id = id;
-        this.movieId = movieId;
         this.price = price;
+        this.movieId = movieId;
         this.theater = theater;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -33,11 +46,11 @@ public class ShowtimeDTO {
         this.id = id;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
