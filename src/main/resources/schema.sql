@@ -14,7 +14,6 @@ CREATE TABLE IF NOT EXISTS showtimes (
     start_time TIMESTAMP WITH TIME ZONE NOT NULL,
     end_time TIMESTAMP WITH TIME ZONE NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
-    -- Adding a foreign key constraint to ensure that the movie_id references an existing movie
     FOREIGN KEY (movie_id) REFERENCES movies(id)
     ON DELETE CASCADE
 );
@@ -25,8 +24,7 @@ CREATE TABLE IF NOT EXISTS tickets (
     seat_number VARCHAR(64) NOT NULL,
     user_id UUID NOT NULL,
     booking_id UUID NOT NULL,
-    UNIQUE(showtime_id, seat_number)  -- Adding a unique constraint to prevent double booking,
-    -- Adding a foreign key constraint to ensure that the showtime_id references an existing showtime
+    UNIQUE(showtime_id, seat_number),
     FOREIGN KEY (showtime_id) REFERENCES showtimes(id)
     ON DELETE CASCADE
 );
