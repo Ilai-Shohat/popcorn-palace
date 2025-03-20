@@ -30,23 +30,23 @@ public class Movie {
     @Column(name = "duration")
     @NotNull(message = "Duration is required")
     @Positive(message = "Duration must be positive")
-    private int duration;
+    private Integer duration;
 
     @Column(name = "rating")
     @NotNull(message = "Rating is required")
     @Min(value = 0, message = "Rating must be at least 1")
     @Max(value = 10, message = "Rating must be at most 10")
-    private double rating;
+    private Double rating;
 
     @Column(name = "release_year")
     @NotNull(message = "Release year is required")
     @Max(value = 2025, message = "Release year cannot be in the future")
-    private int releaseYear;
+    private Integer releaseYear;
 
     public Movie() {
     }
 
-    public Movie(String title, String genre, int duration, double rating, int releaseYear) {
+    public Movie(String title, String genre, Integer duration, Double rating, Integer releaseYear) {
         super();
         this.title = title;
         this.genre = genre;
@@ -79,27 +79,27 @@ public class Movie {
         this.genre = genre;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
-    public double getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 
-    public int getReleaseYear() {
+    public Integer getReleaseYear() {
         return releaseYear;
     }
 
-    public void setReleaseYear(int releaseYear) {
+    public void setReleaseYear(Integer releaseYear) {
         this.releaseYear = releaseYear;
     }
 
