@@ -12,9 +12,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "showtimes")
+@Data
+@NoArgsConstructor
 public class Showtime {
 
     @Id
@@ -43,69 +47,12 @@ public class Showtime {
     @PositiveOrZero(message = "Price must be non-negative")
     private Double price;
 
-    public Showtime() {
-    }
-
+    // Custom constructor without id parameter
     public Showtime(Movie movie, String theater, Instant startTime, Instant endTime, Double price) {
-        super();
         this.movie = movie;
         this.theater = theater;
         this.startTime = startTime;
         this.endTime = endTime;
         this.price = price;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Movie getMovie() {
-        return movie;
-    }
-
-    public void setMovie(Movie movie) {
-        this.movie = movie;
-    }
-
-    public String getTheater() {
-        return theater;
-    }
-
-    public void setTheater(String theater) {
-        this.theater = theater;
-    }
-
-    public Instant getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Instant startTime) {
-        this.startTime = startTime;
-    }
-
-    public Instant getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Instant endTime) {
-        this.endTime = endTime;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    @Override
-    public String toString() {
-        return "Showtime [id=" + id + ", movie=" + movie + ", theater=" + theater + ", startTime=" + startTime
-                + ", endTime=" + endTime + ", price=" + price + "]";
     }
 }

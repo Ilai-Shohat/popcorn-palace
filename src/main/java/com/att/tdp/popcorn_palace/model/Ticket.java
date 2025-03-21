@@ -12,9 +12,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
 @Table(name = "tickets")
+@NoArgsConstructor
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,60 +40,11 @@ public class Ticket {
     @Column(name = "booking_id")
     private UUID bookingId;
 
-    public Ticket() {
-    }
-
     public Ticket(Showtime showtime, String seatNumber, UUID userId) {
         super();
         this.showtime = showtime;
         this.seatNumber = seatNumber;
         this.userId = userId;
         this.bookingId = UUID.randomUUID();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Showtime getShowtime() {
-        return showtime;
-    }
-
-    public void setShowtime(Showtime showtime) {
-        this.showtime = showtime;
-    }
-
-    public String getSeatNumber() {
-        return seatNumber;
-    }
-
-    public void setSeatNumber(String seatNumber) {
-        this.seatNumber = seatNumber;
-    }
-
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-    }
-
-    public UUID getBookingId() {
-        return bookingId;
-    }
-
-    public void setBookingId(UUID bookingId) {
-        this.bookingId = bookingId;
-    }
-
-    @Override
-    public String toString() {
-        return "Ticket [id=" + id + ", showtime=" + showtime + ", seatNumber=" + seatNumber +
-                ", userId=" + userId + ", bookingId=" + bookingId + "]";
     }
 }
