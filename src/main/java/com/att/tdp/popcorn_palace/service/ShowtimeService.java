@@ -36,8 +36,8 @@ public class ShowtimeService {
     }
 
     public Showtime createShowtime(Showtime showtime) {
-        validateMovie(showtime);
         validateTimeRange(showtime);
+        validateMovie(showtime);
         validateNoOverlappingShowtimes(showtime, null);
         return showtimeRepository.save(showtime);
     }
