@@ -2,6 +2,7 @@ package com.att.tdp.popcorn_palace.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -98,5 +99,38 @@ public class GlobalControllerExceptionHandler {
         body.put("message", ex.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Object> handleRuntimeException(RuntimeException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", Instant.now());
+        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        body.put("error", "Internal Server Error");
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    // @ExceptionHandler(Exception.class)
+    // public ResponseEntity<Object> handleGenericException(Exception ex) {
+    // Map<String, Object> body = new HashMap<>();
+    // body.put("timestamp", Instant.now());
+    // body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+    // body.put("error", "Internal Server Error");
+    // body.put("message", "An unexpected error occurred");
+
+    // return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    // }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", Instant.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Bad Request");
+        body.put("message", "Malformed JSON request");
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 }
