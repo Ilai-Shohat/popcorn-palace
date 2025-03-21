@@ -24,6 +24,7 @@ public class ShowtimeController {
     @GetMapping("/{showtimeId}")
     public ResponseEntity<ShowtimeDTO> getShowtimeById(@PathVariable Long showtimeId) {
         Showtime showtime = showtimeService.getShowtimeById(showtimeId);
+
         return ResponseEntity.ok(showtimeMapper.toDTO(showtime));
     }
 
@@ -31,6 +32,7 @@ public class ShowtimeController {
     public ResponseEntity<ShowtimeDTO> createShowtime(@Valid @RequestBody ShowtimeDTO showtimeDTO) {
         Showtime showtime = showtimeMapper.fromDTO(showtimeDTO);
         Showtime createdShowtime = showtimeService.createShowtime(showtime);
+
         return ResponseEntity.ok(showtimeMapper.toDTO(createdShowtime));
     }
 
@@ -38,13 +40,15 @@ public class ShowtimeController {
     public ResponseEntity<ShowtimeDTO> updateShowtime(@PathVariable Long showtimeId,
             @Valid @RequestBody ShowtimeDTO showtimeDTO) {
         Showtime showtime = showtimeMapper.fromDTO(showtimeDTO);
-        Showtime updatedShowtime = showtimeService.updateShowtime(showtimeId, showtime);
-        return ResponseEntity.ok(showtimeMapper.toDTO(updatedShowtime));
+        showtimeService.updateShowtime(showtimeId, showtime);
+
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{showtimeId}")
     public ResponseEntity<Void> deleteShowtime(@PathVariable Long showtimeId) {
         showtimeService.deleteShowtime(showtimeId);
+
         return ResponseEntity.ok().build();
     }
 }

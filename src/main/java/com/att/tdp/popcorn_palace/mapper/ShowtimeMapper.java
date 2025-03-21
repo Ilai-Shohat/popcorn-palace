@@ -14,12 +14,6 @@ public class ShowtimeMapper {
     @Autowired
     private MovieService movieService;
 
-    /**
-     * Converts a Showtime entity to a ShowtimeDTO
-     * 
-     * @param showtime The Showtime entity to convert
-     * @return The corresponding ShowtimeDTO
-     */
     public ShowtimeDTO toDTO(Showtime showtime) {
         if (showtime == null) {
             return null;
@@ -34,12 +28,6 @@ public class ShowtimeMapper {
                 showtime.getEndTime());
     }
 
-    /**
-     * Converts a ShowtimeDTO to a Showtime entity
-     * 
-     * @param dto The ShowtimeDTO to convert
-     * @return The corresponding Showtime entity
-     */
     public Showtime fromDTO(ShowtimeDTO dto) {
         if (dto == null) {
             return null;

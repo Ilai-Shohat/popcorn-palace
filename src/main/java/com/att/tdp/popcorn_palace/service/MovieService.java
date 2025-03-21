@@ -7,6 +7,7 @@ import com.att.tdp.popcorn_palace.exception.MovieNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class MovieService {
         if (!existingMovies.isEmpty()) {
             throw new MovieAlreadyExistsException("Movie with title '" + movie.getTitle() + "' already exists");
         }
+
         return movieRepository.save(movie);
     }
 
@@ -35,16 +37,19 @@ public class MovieService {
         if (movies.isEmpty()) {
             throw new MovieNotFoundException("Movie with title '" + movieTitle + "' not found");
         }
+
         return movies.get(0);
     }
 
     public Movie getMovieById(Long id) {
         Optional<Movie> movie = movieRepository.findById(id);
+
         return movie.orElseThrow(() -> new MovieNotFoundException("Movie with ID " + id + " not found"));
     }
 
-    public void updateMovie(String movieTitle, Movie movie) {
+    public Movie updateMovie(String movieTitle, Movie movie) {
         List<Movie> existingMovies = movieRepository.findByTitle(movieTitle);
+
         if (!existingMovies.isEmpty()) {
             Movie existingMovie = existingMovies.get(0);
 
@@ -58,12 +63,8 @@ public class MovieService {
                 }
             }
 
-            existingMovie.setTitle(movie.getTitle());
-            existingMovie.setGenre(movie.getGenre());
-            existingMovie.setDuration(movie.getDuration());
-            existingMovie.setRating(movie.getRating());
-            existingMovie.setReleaseYear(movie.getReleaseYear());
-            movieRepository.save(existingMovie);
+            BeanUtils.copyProperties(movie, existingMovie, "id");
+            return movieRepository.save(existingMovie);
         } else {
             throw new MovieNotFoundException("Movie with title '" + movieTitle + "' not found");
         }
@@ -71,6 +72,7 @@ public class MovieService {
 
     public void deleteMovie(String movieTitle) {
         List<Movie> movies = movieRepository.findByTitle(movieTitle);
+
         if (!movies.isEmpty()) {
             Movie movie = movies.get(0);
             movieRepository.delete(movie);

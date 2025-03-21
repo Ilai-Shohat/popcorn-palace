@@ -6,6 +6,8 @@ import com.att.tdp.popcorn_palace.exception.OverlappingShowtimeException;
 import com.att.tdp.popcorn_palace.exception.ShowtimeNotFoundException;
 import com.att.tdp.popcorn_palace.model.Showtime;
 import com.att.tdp.popcorn_palace.repository.ShowtimeRepository;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,13 +34,15 @@ public class ShowtimeService {
         if (!showtimeExists(id)) {
             throw new ShowtimeNotFoundException("Showtime with ID " + id + " not found");
         }
+
         return showtimeRepository.findById(id).get();
     }
 
     public Showtime createShowtime(Showtime showtime) {
         validateTimeRange(showtime);
-        validateMovie(showtime);
+        validateMovieExists(showtime);
         validateNoOverlappingShowtimes(showtime, null);
+
         return showtimeRepository.save(showtime);
     }
 
@@ -46,14 +50,8 @@ public class ShowtimeService {
         Showtime existingShowtime = showtimeRepository.findById(id)
                 .orElseThrow(() -> new ShowtimeNotFoundException("Showtime with ID " + id + " not found"));
 
-        validateMovie(showtime);
-
-        existingShowtime.setMovie(showtime.getMovie());
-        existingShowtime.setPrice(showtime.getPrice());
-        existingShowtime.setTheater(showtime.getTheater());
-        existingShowtime.setStartTime(showtime.getStartTime());
-        existingShowtime.setEndTime(showtime.getEndTime());
-
+        validateMovieExists(showtime);
+        BeanUtils.copyProperties(showtime, existingShowtime, "id");
         validateTimeRange(existingShowtime);
         validateNoOverlappingShowtimes(existingShowtime, id);
 
@@ -63,16 +61,12 @@ public class ShowtimeService {
     public void deleteShowtime(Long id) {
         Showtime showtime = showtimeRepository.findById(id)
                 .orElseThrow(() -> new ShowtimeNotFoundException("Showtime with ID " + id + " not found"));
+                
         showtimeRepository.delete(showtime);
     }
 
-    /**
-     * Validates that the movie in the showtime exists in the database
-     * 
-     * @param showtime The showtime to validate
-     * @throws MovieNotFoundException if the movie doesn't exist
-     */
-    private void validateMovie(Showtime showtime) {
+    // Validates that the movie in the showtime exists in the database
+    private void validateMovieExists(Showtime showtime) {
         if (showtime.getMovie() == null) {
             throw new MovieNotFoundException("Movie is required for showtime");
         }
@@ -82,14 +76,7 @@ public class ShowtimeService {
         }
     }
 
-    /**
-     * Validates that there are no overlapping showtimes for the same theater.
-     * 
-     * @param showtime   The showtime to validate
-     * @param showtimeId The ID of the showtime being updated (null for new
-     *                   showtimes)
-     * @throws OverlappingShowtimeException if there are overlapping showtimes
-     */
+    // Validates that there are no overlapping showtimes for the same theater.
     private void validateNoOverlappingShowtimes(Showtime showtime, Long showtimeId) {
         List<Showtime> overlappingShowtimes = showtimeRepository.findOverlappingShowtimes(
                 showtime.getTheater(),
@@ -107,12 +94,7 @@ public class ShowtimeService {
         }
     }
 
-    /**
-     * Validates that the start time is before the end time
-     * 
-     * @param showtime The showtime to validate
-     * @throws InvalidTimeRangeException if end time is not after start time
-     */
+    // Validates that the start time is before the end time
     private void validateTimeRange(Showtime showtime) {
         if (showtime.getStartTime() == null) {
             throw new InvalidTimeRangeException("Start time cannot be null");

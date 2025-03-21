@@ -36,6 +36,7 @@ public class MovieController {
         List<MovieDTO> dtos = movies.stream()
                 .map(movieMapper::toDTO)
                 .collect(Collectors.toList());
+
         return ResponseEntity.ok(dtos);
     }
 
@@ -43,6 +44,7 @@ public class MovieController {
     public ResponseEntity<MovieDTO> createMovie(@Valid @RequestBody MovieDTO movieDTO) {
         Movie movie = movieMapper.fromDTO(movieDTO);
         Movie createdMovie = movieService.createMovie(movie);
+
         return ResponseEntity.ok(movieMapper.toDTO(createdMovie));
     }
 
@@ -51,12 +53,14 @@ public class MovieController {
             @Valid @RequestBody MovieDTO movieDTO) {
         Movie movie = movieMapper.fromDTO(movieDTO);
         movieService.updateMovie(movieTitle, movie);
+
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{movieTitle}")
     public ResponseEntity<?> deleteMovie(@PathVariable String movieTitle) {
         movieService.deleteMovie(movieTitle);
+
         return ResponseEntity.ok().build();
     }
 }

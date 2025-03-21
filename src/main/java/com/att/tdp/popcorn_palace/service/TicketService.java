@@ -22,18 +22,26 @@ public class TicketService {
     @Autowired
     private ShowtimeService showtimeService;
 
-    public Ticket bookTicket(Ticket ticket) {
-        // Validate the showtime exists - this will throw ShowtimeNotFoundException if
-        // not found
+    // Books a ticket based on the provided request
+    public Ticket createTicketFromRequest(TicketBookingRequest request) {
+        // Get showtime from service - this will throw ShowtimeNotFoundException if not
+        // found
+        Showtime showtime = showtimeService.getShowtimeById(request.getShowtimeId());
+        Ticket ticket = new Ticket();
 
+        ticket.setShowtime(showtime);
+        ticket.setSeatNumber(request.getSeatNumber());
+        ticket.setUserId(request.getUserId());
+
+        return bookTicket(ticket);
+    }
+
+    public Ticket bookTicket(Ticket ticket) {
         if (!showtimeService.showtimeExists(ticket.getShowtime().getId())) {
             throw new ShowtimeNotFoundException("Showtime with ID " + ticket.getShowtime().getId() + " not found");
         }
 
-        // Check for double booking
         validateNoDoubleBooking(ticket);
-
-        // Generate booking ID if not present
         if (ticket.getBookingId() == null) {
             ticket.setBookingId(UUID.randomUUID());
         }
@@ -41,35 +49,7 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    /**
-     * Books a ticket based on the provided request
-     * 
-     * @param request the ticket booking request
-     * @return the booked ticket
-     * @throws ShowtimeNotFoundException if the showtime doesn't exist
-     * @throws BookingException          if there's a booking conflict
-     */
-    public Ticket createTicketFromRequest(TicketBookingRequest request) {
-        // Get showtime from service - this will throw ShowtimeNotFoundException if not
-        // found
-        Showtime showtime = showtimeService.getShowtimeById(request.getShowtimeId());
-
-        // Create ticket from request
-        Ticket ticket = new Ticket();
-        ticket.setShowtime(showtime);
-        ticket.setSeatNumber(request.getSeatNumber());
-        ticket.setUserId(request.getUserId());
-
-        // Book the ticket using existing method
-        return bookTicket(ticket);
-    }
-
-    /**
-     * Validates that there is no double booking for the same seat and showtime
-     * 
-     * @param ticket The ticket to be booked
-     * @throws BookingException if the seat is already booked for the showtime
-     */
+    // Validates that there is no double booking for the same seat and showtime
     private void validateNoDoubleBooking(Ticket ticket) {
         List<Ticket> existingTickets = ticketRepository.findByShowtimeIdAndSeatNumber(
                 ticket.getShowtime().getId(),
