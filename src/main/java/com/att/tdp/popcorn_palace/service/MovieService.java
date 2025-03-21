@@ -40,7 +40,7 @@ public class MovieService {
 
     public Movie getMovieById(Long id) {
         Optional<Movie> movie = movieRepository.findById(id);
-        return movie.orElseThrow(() -> new MovieNotFoundException("Movie with id " + id + " not found"));
+        return movie.orElseThrow(() -> new MovieNotFoundException("Movie with ID " + id + " not found"));
     }
 
     public void updateMovie(String movieTitle, Movie movie) {

@@ -34,7 +34,7 @@ public class Movie {
 
     @Column(name = "rating")
     @NotNull(message = "Rating is required")
-    @Min(value = 0, message = "Rating must be at least 1")
+    @Min(value = 0, message = "Rating must be at least 0")
     @Max(value = 10, message = "Rating must be at most 10")
     private Double rating;
 

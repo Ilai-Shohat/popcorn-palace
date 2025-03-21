@@ -3,7 +3,6 @@ package com.att.tdp.popcorn_palace.service;
 import com.att.tdp.popcorn_palace.dto.TicketBookingRequest;
 import com.att.tdp.popcorn_palace.exception.BookingException;
 import com.att.tdp.popcorn_palace.exception.ShowtimeNotFoundException;
-import com.att.tdp.popcorn_palace.model.Movie;
 import com.att.tdp.popcorn_palace.model.Showtime;
 import com.att.tdp.popcorn_palace.model.Ticket;
 import com.att.tdp.popcorn_palace.repository.TicketRepository;
