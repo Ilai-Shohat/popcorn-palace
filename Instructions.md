@@ -28,7 +28,7 @@ The following tools are required to build, run, and test this application:
 
 1. Clone or download the project to your local machine:
    ```
-   git clone <repository-url>
+   git clone https://github.com/Ilai-Shohat/popcorn-palace
    cd popcorn-palace
    ```
 
