@@ -27,7 +27,7 @@ public class TicketBookingController {
     public ResponseEntity<Map<String, String>> bookTicket(@Valid @RequestBody TicketBookingRequest request) {
         Ticket bookedTicket = ticketService.createTicketFromRequest(request);
         Map<String, String> response = new HashMap<>();
-        
+
         response.put("bookingId", bookedTicket.getBookingId().toString());
 
         return ResponseEntity.ok(response);

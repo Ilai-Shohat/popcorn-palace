@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
+    
     // Find tickets by showtime ID and seat number to check for double bookings
     List<Ticket> findByShowtimeIdAndSeatNumber(Long showtimeId, String seatNumber);
 }
