@@ -44,7 +44,7 @@ Candidates are expected to design and implement the above APIs, adhering to REST
 
 | API Description           | Endpoint       | Request Body                                     | Response Status | Response Body                                                                                                                                          |
 |---------------------------|----------------|--------------------------------------------------|-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Book a ticket | POST /bookings | { "showtimeId": 1, "seatNumber": 15 , userId:"84438967-f68f-4fa0-b620-0f08217e76af"} | 200 OK | { "bookingId":"d1a6423b-4469-4b00-8c5f-e3cfc42eacae" }                                                                                                 |
+| Book a ticket | POST /bookings | { "showtimeId": 1, "seatNumber": 15 , "userId": "84438967-f68f-4fa0-b620-0f08217e76af"} | 200 OK | { "bookingId":"d1a6423b-4469-4b00-8c5f-e3cfc42eacae" }                                                                                                 |
 
 
 ## Jump Start
