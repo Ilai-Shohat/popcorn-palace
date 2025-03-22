@@ -6,9 +6,10 @@ import com.att.tdp.popcorn_palace.model.Movie;
 import com.att.tdp.popcorn_palace.repository.MovieRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class MovieServiceTest {
 
     @Mock
@@ -28,16 +30,17 @@ public class MovieServiceTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
     }
 
     @Test
     public void testCreateMoviePositive() {
         Movie movie = new Movie("Test Movie", "Drama", 100, 7.5, 2022);
+
         when(movieRepository.findByTitle("Test Movie")).thenReturn(Collections.emptyList());
         when(movieRepository.save(movie)).thenReturn(movie);
 
         Movie result = movieService.createMovie(movie);
+        
         assertNotNull(result);
         assertEquals("Test Movie", result.getTitle());
         verify(movieRepository, times(1)).save(movie);

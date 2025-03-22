@@ -9,9 +9,11 @@ import com.att.tdp.popcorn_palace.model.Showtime;
 import com.att.tdp.popcorn_palace.repository.ShowtimeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class ShowtimeServiceTest {
 
     @Mock
@@ -242,8 +245,6 @@ public class ShowtimeServiceTest {
                 Instant.parse("2023-03-01T12:00:00Z"),
                 Instant.parse("2023-03-01T10:00:00Z"), 15.0);
 
-        when(movieService.getMovieById(movie.getId())).thenReturn(movie);
-
         InvalidTimeRangeException exception = assertThrows(
                 InvalidTimeRangeException.class,
                 () -> showtimeService.createShowtime(invalidShowtime));
@@ -258,8 +259,6 @@ public class ShowtimeServiceTest {
         Instant sameTime = Instant.parse("2023-03-01T10:00:00Z");
         Showtime invalidShowtime = new Showtime(movie, "Theater1",
                 sameTime, sameTime, 15.0);
-
-        when(movieService.getMovieById(movie.getId())).thenReturn(movie);
 
         InvalidTimeRangeException exception = assertThrows(
                 InvalidTimeRangeException.class,
