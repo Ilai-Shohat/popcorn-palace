@@ -11,7 +11,6 @@ A movie theater management system that allows for movie listings, showtime sched
 - [Testing the Application](#testing-the-application)
   - [Running Automated Tests](#running-automated-tests)
   - [Manual API Testing](#manual-api-testing)
-- [API Documentation](#api-documentation)
 - [Project Structure](#project-structure)
 
 ## Prerequisites
@@ -130,11 +129,3 @@ The application follows a standard Spring Boot structure:
 - `dto`: Data Transfer Objects
 - `mapper`: Object mappers
 - `exception`: Custom exceptions and error handling
-- `config`: Configuration classes
-
-Key architecture components:
-- Spring Boot for application framework
-- Spring Data JPA for database access
-- PostgreSQL for data storage
-- Maven for dependency management and build
-- Docker for containerization
