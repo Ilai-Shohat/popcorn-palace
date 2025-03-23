@@ -18,10 +18,9 @@ A movie theater management system that allows for movie listings, showtime sched
 
 The following tools are required to build, run, and test this application:
 
-- Java 17 or higher
-- Maven 3.6.x or higher
+- Java 17 or higher (If not using docker)
+- Maven 3.6.x or higher 
 - Docker and Docker Compose (for containerized deployment)
-- Git (optional, for version control)
 - An API testing tool like Postman or cURL (for manual API testing)
 
 ## Building the Project
@@ -35,6 +34,14 @@ The following tools are required to build, run, and test this application:
 2. Build the project using Maven:
    ```
    mvn clean package
+   ```
+   Or if you don't have Maven installed, use the Maven wrapper:
+   ```
+   # For Unix/Linux/macOS
+   ./mvnw clean package
+   
+   # For Windows
+   mvnw.cmd clean package
    ```
    This will compile the code, run tests, and create a JAR file in the `target` directory.
 
@@ -56,11 +63,6 @@ The easiest way to run the application is using Docker Compose, which will set u
    ```
 
 3. The application will be available at http://localhost:8080
-
-4. To stop the application:
-   ```
-   docker-compose down
-   ```
 
 ## Testing the Application
 
@@ -90,13 +92,6 @@ The application exposes several REST endpoints that can be tested using tools li
 #### Ticket Booking API
 - Book a ticket: `POST /bookings`
 
-Example for creating a new movie using cURL:
-```bash
-curl -X POST http://localhost:8080/movies \
-  -H "Content-Type: application/json" \
-  -d '{"title":"The Matrix", "genre":"Sci-Fi", "duration":136, "rating":8.7, "releaseYear":1999}'
-```
-
 ## Project Structure
 
 The application follows a standard Spring Boot structure:
@@ -108,8 +103,3 @@ The application follows a standard Spring Boot structure:
 - `dto`: Data Transfer Objects
 - `mapper`: Object mappers
 - `exception`: Custom exceptions
-
-Key components:
-- Movie: Represents a film with details like title, genre, and rating
-- Showtime: Represents a scheduled movie showing in a specific theater
-- Ticket: Represents a booking for a specific showtime and seat
