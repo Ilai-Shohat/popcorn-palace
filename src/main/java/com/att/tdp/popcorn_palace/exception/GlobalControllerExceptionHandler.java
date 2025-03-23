@@ -19,7 +19,7 @@ public class GlobalControllerExceptionHandler {
                 HttpStatus.CONFLICT.value(),
                 "Conflict",
                 ex.getMessage());
-        
+
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
@@ -29,7 +29,7 @@ public class GlobalControllerExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad Request",
                 ex.getMessage());
-        
+
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -39,7 +39,7 @@ public class GlobalControllerExceptionHandler {
                 HttpStatus.CONFLICT.value(),
                 "Conflict",
                 ex.getMessage());
-        
+
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
@@ -49,7 +49,7 @@ public class GlobalControllerExceptionHandler {
                 HttpStatus.CONFLICT.value(),
                 "Conflict",
                 ex.getMessage());
-        
+
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
@@ -59,7 +59,7 @@ public class GlobalControllerExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad Request",
                 ex.getMessage());
-        
+
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -68,16 +68,16 @@ public class GlobalControllerExceptionHandler {
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 "Validation Error",
-                "Validation failed");
-        
+                "Validation failed for request parameters");
+
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.toList());
-        
+
         response.setErrors(errors);
-        
+
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -87,7 +87,7 @@ public class GlobalControllerExceptionHandler {
                 HttpStatus.NOT_FOUND.value(),
                 "Not Found",
                 ex.getMessage());
-        
+
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -97,18 +97,18 @@ public class GlobalControllerExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Internal Server Error",
                 ex.getMessage());
-        
+
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // @ExceptionHandler(Exception.class)
     // public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
-    //     ErrorResponse response = new ErrorResponse(
-    //             HttpStatus.INTERNAL_SERVER_ERROR.value(),
-    //             "Internal Server Error",
-    //             "An unexpected error occurred");
-    //     
-    //     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    // ErrorResponse response = new ErrorResponse(
+    // HttpStatus.INTERNAL_SERVER_ERROR.value(),
+    // "Internal Server Error",
+    // "An unexpected error occurred");
+    //
+    // return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     // }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -117,7 +117,7 @@ public class GlobalControllerExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad Request",
                 "Malformed JSON request");
-        
+
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
