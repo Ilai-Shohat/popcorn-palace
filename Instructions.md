@@ -11,17 +11,18 @@ A movie theater management system that allows for movie listings, showtime sched
 - [Testing the Application](#testing-the-application)
   - [Running Automated Tests](#running-automated-tests)
   - [Manual API Testing](#manual-api-testing)
+- [API Documentation](#api-documentation)
 - [Project Structure](#project-structure)
-- [Troubleshooting](#troubleshooting)
 
 ## Prerequisites
 
 The following tools are required to build, run, and test this application:
 
-- Java 17 or higher (If not using docker)
-- Maven 3.6.x or higher 
+- Java 17 or higher (If not using Docker)
+- Maven 3.6.x or higher (Or use the included Maven wrapper)
 - Docker and Docker Compose (for containerized deployment)
 - An API testing tool like Postman or cURL (for manual API testing)
+- Git (for cloning the repository)
 
 ## Building the Project
 
@@ -45,7 +46,7 @@ The following tools are required to build, run, and test this application:
    ```
    This will compile the code, run tests, and create a JAR file in the `target` directory.
 
-## Running the Application
+## Running the Application 
 
 ### Using Docker Compose
 
@@ -64,6 +65,27 @@ The easiest way to run the application is using Docker Compose, which will set u
 
 3. The application will be available at http://localhost:8080
 
+4. To stop the application and related containers:
+   ```
+   docker-compose down
+   ```
+
+### Running Locally
+
+1. Make sure you have a PostgreSQL database running (or modify `application.properties` to use a different database).
+
+2. Run the application from the command line:
+   ```
+   java -jar target/popcorn-palace-0.0.1-SNAPSHOT.jar
+   ```
+   
+   Or using Spring Boot Maven plugin:
+   ```
+   mvn spring-boot:run
+   ```
+
+3. The application will be available at http://localhost:8080
+
 ## Testing the Application
 
 ### Running Automated Tests
@@ -71,6 +93,11 @@ The easiest way to run the application is using Docker Compose, which will set u
 1. To run all tests:
    ```
    mvn test
+   ```
+
+2. To run a specific test class:
+   ```
+   mvn test -Dtest=MovieServiceTest
    ```
 
 ### Manual API Testing
@@ -102,4 +129,12 @@ The application follows a standard Spring Boot structure:
 - `model`: JPA entities
 - `dto`: Data Transfer Objects
 - `mapper`: Object mappers
-- `exception`: Custom exceptions
+- `exception`: Custom exceptions and error handling
+- `config`: Configuration classes
+
+Key architecture components:
+- Spring Boot for application framework
+- Spring Data JPA for database access
+- PostgreSQL for data storage
+- Maven for dependency management and build
+- Docker for containerization
