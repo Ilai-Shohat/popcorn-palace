@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS showtimes (
     start_time TIMESTAMP WITH TIME ZONE NOT NULL,
     end_time TIMESTAMP WITH TIME ZONE NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (movie_id) REFERENCES movies(id)
+    FOREIGN KEY (movie_id) REFERENCES movies(id) 
     ON DELETE CASCADE
 );
 
@@ -25,6 +25,6 @@ CREATE TABLE IF NOT EXISTS tickets (
     user_id UUID NOT NULL,
     booking_id UUID NOT NULL,
     UNIQUE(showtime_id, seat_number),
-    FOREIGN KEY (showtime_id) REFERENCES showtimes(id)
+    FOREIGN KEY (showtime_id) REFERENCES showtimes(id) 
     ON DELETE CASCADE
 );
