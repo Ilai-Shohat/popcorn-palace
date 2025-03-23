@@ -23,7 +23,7 @@ The following tools are required to build, run, and test this application:
 - An API testing tool like Postman or cURL (for manual API testing)
 - Git (for cloning the repository)
 
-## Building the Project
+## Building the Project (If you have java 17 or higher)
 
 1. Clone or download the project to your local machine:
    ```
